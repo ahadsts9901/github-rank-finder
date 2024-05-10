@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Github Ranking</title>
+</head>
+
+<body>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+            font-weight: bold;
+            font-size: 1.1em;
+            outline: none;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1em;
+            padding: 1em;
+        }
+
+        form>* {
+            padding: 0.5em;
+        }
+
+        form>button,
+        form>input {
+            width: 250px;
+        }
+
+        form>button {
+            cursor: pointer;
+        }
+
+        form>p {
+            font-size: 1em;
+            color: #555;
+        }
+    </style>
+
+    <form>
+
+        <h2>See Your Github Rank</h2>
+        <p>Use your "exact" github username .... the app is case sensitive</p>
+
+        <input type="text" id="countryName" placeholder="Country name...">
+        <input type="text" id="userName" placeholder="Github username...">
+        <button type="submit">See your rank</button>
+
+        <h2 id="result"></h2>
+
+    </form>
+
+    <script>
+
+        document.querySelector("form").addEventListener("submit", async (e) => {
+
+            e.preventDefault()
+
+            const userName = document.querySelector("#userName")?.value
+            const countryName = document.querySelector("#countryName")?.value
+
+            if (!userName || userName?.trim() === "") return
+
+            try {
+
+                const response = await fetch(`https://committers.top/rank_only/${countryName.toLowerCase()}.json`);
+                const data = await response.json();
+
+                const users = data?.user
+
+                for (let i = 0; i < users.length; i++) {
+
+                    if (users[i] === userName) {
+                        const result = `${users[i]} is on #${i + 1} rank in ${countryName}`
+                        document.querySelector("#result").innerText = result
+                        break
+                    } else {
+                        const result = `Oops! ${userName} is unranked in ${countryName}`
+                        document.querySelector("#result").innerText = result
+                    }
+
+                }
+
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        })
+
+    </script>
+</body>
+
+</html>
