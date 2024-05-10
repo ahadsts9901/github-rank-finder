@@ -51,7 +51,7 @@
     <form>
 
         <h2>See Your Github Rank</h2>
-        <p>Use your "exact" github username .... the app is case sensitive</p>
+        <!-- <p>Use your "exact" github username .... the app is case sensitive</p> -->
 
         <input type="text" id="countryName" placeholder="Country name...">
         <input type="text" id="userName" placeholder="Github username...">
@@ -81,7 +81,7 @@
 
                 for (let i = 0; i < users.length; i++) {
 
-                    if (users[i] === userName) {
+                    if (users[i].toLowerCase() === userName.toLowerCase()) {
                         const result = `${users[i]} is on #${i + 1} rank in ${countryName}`
                         document.querySelector("#result").innerText = result
                         break
